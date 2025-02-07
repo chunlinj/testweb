@@ -1,0 +1,63 @@
+/* 悬浮按钮组 */
+.float-buttons {
+    position: fixed;
+    right: 20px;
+    bottom: 20vh;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 1000;
+}
+
+.float-btn {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    padding: 8px 16px;
+    border-radius: 24px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+.float-btn:hover {
+    transform: translateX(-5px);
+}
+
+.float-btn .icon {
+    margin-right: 8px;
+    font-size: 1.2rem;
+}
+
+.wechat-btn {
+    background-color: #40c057;
+    color: white;
+}
+
+.wechat-btn:hover {
+    background-color: #37b24d;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+    .float-buttons {
+        right: 10px;
+        bottom: 20vh;
+    }
+
+    .float-btn {
+        padding: 6px 12px;
+    }
+
+    .float-btn span {
+        display: none;
+    }
+
+    .float-btn .icon {
+        margin-right: 0;
+    }
+}
+
+/* 隐藏 Tawk.to 默认按钮 */
+.tawk-min-container {
+    display: none !important;
+} 

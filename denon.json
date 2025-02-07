@@ -1,0 +1,57 @@
+{
+  "$schema": "https://deno.land/x/denon@2.5.0/schema.json",
+  "scripts": {
+    "start": {
+      "cmd": "deno run server.ts",
+      "desc": "运行服务器并监视文件变化",
+      "allow": [
+        "net",
+        "read",
+        "write",
+        "env",
+        "run"
+      ],
+      "watch": true,
+      "unstable": false
+    },
+    "dev": {
+      "cmd": "deno run server.ts",
+      "desc": "开发模式运行",
+      "allow": [
+        "net",
+        "read",
+        "write",
+        "env"
+      ],
+      "watch": true,
+      "env": {
+        "NODE_ENV": "development"
+      }
+    },
+    "prod": {
+      "cmd": "deno run server.ts",
+      "desc": "生产模式运行",
+      "allow": [
+        "net",
+        "read",
+        "write",
+        "env"
+      ],
+      "env": {
+        "NODE_ENV": "production"
+      }
+    }
+  },
+  "watcher": {
+    "interval": 350,
+    "exts": ["js", "jsx", "ts", "tsx", "json", "html", "css"],
+    "match": ["**/*.*"],
+    "skip": ["*/.git/*"],
+    "legacy": false
+  },
+  "logger": {
+    "fullscreen": false,
+    "debug": true,
+    "quiet": false
+  }
+} 
