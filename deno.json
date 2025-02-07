@@ -1,0 +1,38 @@
+{
+  "tasks": {
+    "start": "deno run --allow-net --allow-read main.ts",
+    "dev": "deno run --watch --allow-net --allow-read main.ts"
+  },
+  "importMap": "./import_map.json",
+  "compilerOptions": {
+    "allowJs": true,
+    "lib": [
+      "deno.window"
+    ]
+  },
+  "deploy": {
+    "project": "chunlinj-testweb-67",
+    "exclude": [
+      "**/node_modules",
+      ".git"
+    ],
+    "include": [
+      "main.ts",
+      "routes/**/*",
+      "db/**/*",
+      "models/**/*",
+      "index.html",
+      "styles.css",
+      "components/**/*",
+      "google12e945de79f560bc.html",
+      "manifest.json"
+    ],
+    "entrypoint": "./main.ts",
+    "static": [
+      "index.html",
+      "styles.css",
+      "components",
+      "images"
+    ]
+  }
+}

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SorryIOS Admin</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .product-list {
+            margin-top: 20px;
+        }
+        .product-item {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <h1>SorryIOS Admin</h1>
+    <div class="product-list" id="productList">
+        加载中...
+    </div>
+
+    <script>
+        // 获取产品列表
+        async function getProducts() {
+            try {
+                const response = await fetch('/api/products');
+                const products = await response.json();
+                
+                const productList = document.getElementById('productList');
+                if (products.length === 0) {
+                    productList.innerHTML = '暂无商品数据';
+                    return;
+                }
+
+                productList.innerHTML = products.map(product => `
+                    <div class="product-item">
+                        <h3>${product.title}</h3>
+                        <p>价格: ￥${product.price}</p>
+                        <p>库存: ${product.stock}</p>
+                        <p>类型: ${product.type}</p>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('productList').innerHTML = '加载失败，请稍后重试';
+            }
+        }
+
+        // 页面加载完成后获取数据
+        document.addEventListener('DOMContentLoaded', getProducts);
+    </script>
+</body>
+</html> 
