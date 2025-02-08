@@ -396,22 +396,52 @@ router
                 error: "保存用户信息失败" 
             };
         }
+    })
+
+    // 添加动态站点地图路由
+    .get("/sitemap.xml", async (ctx) => {
+        const baseUrl = "https://aishophub.cn";
+        const today = new Date().toISOString().split('T')[0];
+        
+        // 获取所有产品页面
+        const products = await db.collection("products").find().toArray();
+        
+        const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+        <loc>${baseUrl}/</loc>
+        <lastmod>${today}</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>1.0</priority>
+    </url>
+    ${products.map(product => `
+    <url>
+        <loc>${baseUrl}/product-detail.html?id=${product.id}</loc>
+        <lastmod>${today}</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>0.9</priority>
+    </url>
+    `).join('')}
+</urlset>`;
+
+        ctx.response.type = "application/xml";
+        ctx.response.body = sitemap;
     });
 
 // 添加路由
 app.use(router.routes());
 app.use(router.allowedMethods());
 
-// 静态文件服务放在最后
-app.use(async (ctx) => {
+// 添加静态文件中间件
+app.use(async (ctx, next) => {
     try {
+        // 尝试提供静态文件
         await ctx.send({
-            root: Deno.cwd(),
+            root: `${Deno.cwd()}/public`,  // 静态文件目录
             index: "index.html",
         });
     } catch {
-        ctx.response.status = 404;
-        ctx.response.body = "404 Not Found";
+        await next();  // 如果文件不存在，继续下一个中间件
     }
 });
 
