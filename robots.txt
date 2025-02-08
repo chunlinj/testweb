@@ -1,3 +1,0 @@
-User-agent: *
-Allow: /
-Sitemap: https://chunlinj-testweb-67.deno.dev/sitemap.xml 
