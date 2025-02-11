@@ -321,6 +321,20 @@ footer {
     border-top: 1px solid var(--border-color);
 }
 
+.footer-bottom .beian {
+    margin-top: 0.5rem;
+}
+
+.footer-bottom .beian a {
+    color: rgba(255, 255, 255, 0.6);
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.footer-bottom .beian a:hover {
+    color: rgba(255, 255, 255, 0.8);
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     nav ul {
@@ -908,49 +922,84 @@ footer {
 }
 
 .payment-methods {
-    margin-bottom: 1.5rem;
+    margin: 1rem 0;
 }
 
-.payment-methods h4 {
-    margin-bottom: 1rem;
-    color: var(--text-color);
+.payment-methods label {
+    color: #fff;
+    font-size: 14px;
 }
 
 .payment-options {
     display: flex;
-    gap: 1.5rem;
+    gap: 1rem;
+    margin-top: 0.5rem;
 }
 
 .payment-option {
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border: 1px solid #2C2C2E;
+    border-radius: 4px;
     cursor: pointer;
-    padding: 0.8rem 1.2rem;
-    border-radius: 6px;
-    background-color: rgba(255, 255, 255, 0.1);
-    border: 1px solid var(--border-color);
+    transition: all 0.3s ease;
+    background: #1C1C1E;
 }
 
-.payment-icon img {
-    width: 24px;
-    height: 24px;
+.payment-option:hover {
+    border-color: #007AFF;
 }
 
-.submit-btn {
-    width: 100%;
-    padding: 1rem;
-    background-color: var(--primary-color);
-    color: white;
-    border: none;
-    border-radius: 6px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s;
+.payment-option input[type="radio"] {
+    margin: 0;
+    width: 16px;
+    height: 16px;
+    accent-color: #007AFF;
 }
 
-.submit-btn:hover {
-    background-color: #0056b3;
+.payment-option img {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+}
+
+.payment-option span {
+    color: #fff;
+    font-size: 14px;
+}
+
+/* 选中状态 */
+.payment-option input[type="radio"]:checked + img + span {
+    color: #007AFF;
+}
+
+.payment-option input[type="radio"]:checked + img {
+    filter: brightness(1.2);
+}
+
+.payment-option input[type="radio"]:checked ~ * {
+    color: #007AFF;
+}
+
+/* 选中时的边框样式 */
+.payment-option input[type="radio"]:checked ~ * {
+    border-color: #007AFF;
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+    .payment-options {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .payment-option {
+        flex: 1;
+        min-width: 120px;
+        justify-content: center;
+    }
 }
 
 .product-description {

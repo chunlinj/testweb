@@ -3,16 +3,14 @@
   "scripts": {
     "start": {
       "cmd": "deno run server.ts",
-      "desc": "运行服务器并监视文件变化",
+      "desc": "运行服务器",
       "allow": [
         "net",
         "read",
         "write",
-        "env",
-        "run"
+        "env"
       ],
-      "watch": true,
-      "unstable": false
+      "watch": true
     },
     "dev": {
       "cmd": "deno run server.ts",
@@ -40,6 +38,17 @@
       "env": {
         "NODE_ENV": "production"
       }
+    },
+    "debug": {
+      "cmd": "deno run --inspect-brk=127.0.0.1:9229 server.ts",
+      "desc": "调试模式运行服务器",
+      "allow": [
+        "net",
+        "read",
+        "write",
+        "env"
+      ],
+      "watch": false
     }
   },
   "watcher": {

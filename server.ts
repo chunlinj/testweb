@@ -1,13 +1,16 @@
+// @deno-types="https://deno.land/x/oak@v12.6.1/mod.ts"
 import { Application, Router } from "https://deno.land/x/oak@v12.6.1/mod.ts";
 import { MongoClient } from "https://deno.land/x/mongo@v0.32.0/mod.ts";
 import { create, verify } from "https://deno.land/x/djwt@v3.0.1/mod.ts";
 import { SMTPClient } from "https://deno.land/x/denomailer@1.6.0/mod.ts";
 import { crypto } from "https://deno.land/std@0.220.1/crypto/mod.ts";
+import { Client } from "https://deno.land/x/mysql/mod.ts";
 
-// 声明数据库相关变量
+// 在文件顶部声明全局变量
 let db: any;
 let users: any;
 let verificationCodes: any;
+let mysqlClient: any;
 
 // 初始化 MongoDB 连接
 const client = new MongoClient();
@@ -162,6 +165,34 @@ app.use(async (ctx, next) => {
         ctx.response.body = { 
             success: false, 
             error: "数据库服务不可用，请稍后重试" 
+        };
+        return;
+    }
+    await next();
+});
+
+// MySQL 连接配置移到路由之前
+try {
+    mysqlClient = await new Client().connect({
+        hostname: "127.0.0.1",
+        username: "root",
+        password: "Rtgk@2022.07~c1",
+        db: "ry2",
+        port: 3306
+    });
+    console.log("MySQL 连接成功");
+} catch (error) {
+    console.error("MySQL 连接失败:", error);
+    throw error; // 如果数据库连接失败，终止服务器启动
+}
+
+// 添加 MySQL 连接检查中间件
+app.use(async (ctx, next) => {
+    if (!mysqlClient) {
+        ctx.response.status = 503;
+        ctx.response.body = { 
+            success: false, 
+            error: "MySQL 数据库服务不可用，请稍后重试" 
         };
         return;
     }
@@ -394,6 +425,43 @@ router
             ctx.response.body = { 
                 success: false, 
                 error: "保存用户信息失败" 
+            };
+        }
+    })
+
+    // 修改获取商品列表的路由
+    .get("/api/products", async (ctx) => {
+        try {
+            // 调用 RuoYi 后台的商品列表接口
+            const response = await fetch('http://localhost/prod-api/shop/product/list', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            const result = await response.json();
+            console.log("获取到的商品数据:", result); 
+
+            // 转换数据格式以匹配前端需求
+            ctx.response.body = {
+                success: true,
+                data: result.rows.map((item: any) => ({
+                    id: item.productId,
+                    product_name: item.productName,
+                    price: item.price,
+                    stock: item.stock,
+                    main_image: item.mainImage,
+                    create_time: item.createTime,
+                    status: item.status
+                }))
+            };
+        } catch (error) {
+            console.error("获取商品列表错误:", error);
+            ctx.response.status = 500;
+            ctx.response.body = {
+                success: false,
+                error: "获取商品列表失败"
             };
         }
     });
