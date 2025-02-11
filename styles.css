@@ -50,15 +50,23 @@ header {
 .nav-left .logo {
     display: flex;
     align-items: center;
+    gap: 8px;
     text-decoration: none;
-    color: #fff;
-    font-size: 1.2rem;
-    font-weight: bold;
+    color: var(--text-color);
 }
 
 .nav-left .logo img {
     height: 28px;
     margin-right: 8px;
+}
+
+.logo-icon {
+    font-size: 24px;
+}
+
+.logo-text {
+    font-size: 18px;
+    font-weight: bold;
 }
 
 /* 中间导航链接 */
@@ -309,10 +317,13 @@ footer {
 }
 
 .footer-content {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 2rem;
+    display: flex;
+    justify-content: center;
     margin-bottom: 2rem;
+}
+
+.footer-section {
+    text-align: center;
 }
 
 .footer-bottom {
@@ -322,7 +333,7 @@ footer {
 }
 
 .footer-bottom .beian {
-    margin-top: 0.5rem;
+    margin: 0;
 }
 
 .footer-bottom .beian a {
